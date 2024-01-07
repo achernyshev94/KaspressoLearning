@@ -1,13 +1,9 @@
 package com.example.kaspresso.screens
 
-import com.agoda.kakao.common.builders.ViewBuilder
-import com.agoda.kakao.common.views.KView
 import com.agoda.kakao.text.KButton
 import com.agoda.kakao.text.KTextView
 import com.example.kaspresso.CounterFragment
 import com.example.kaspresso.R
-import com.example.kaspresso.base.BaseScreen
-import com.kaspersky.kaspresso.screens.KScreen
 
 object CounterScreen : BaseScreen<CounterScreen>() {
     override val layoutId: Int = R.layout.fragment_counter
@@ -41,14 +37,14 @@ object CounterScreen : BaseScreen<CounterScreen>() {
 
     fun checkTvCounter() {
         tvCounter {
-            isVisible()
+            isDisplayed()
         }
     }
 
     fun checkButtons() {
-        btnIncreaseCounter { isVisible() }
-        btnDecreaseCounter { isVisible() }
-        btnOpenTodo { isVisible() }
+        btnIncreaseCounter { isDisplayed() }
+        btnDecreaseCounter { isDisplayed() }
+        btnOpenTodo { isDisplayed() }
     }
 
     fun increaseCounterClick() {

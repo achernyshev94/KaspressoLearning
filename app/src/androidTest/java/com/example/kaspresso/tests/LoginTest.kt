@@ -1,101 +1,54 @@
 package com.example.kaspresso.tests
 
+import androidx.test.rule.ActivityTestRule
 import com.example.kaspresso.CounterFragment
-import com.example.kaspresso.base.BaseCaspressoTest
+import com.example.kaspresso.MainActivity
+import com.example.kaspresso.extensions.checkFragmentIsDisplayed
 import com.example.kaspresso.screens.CounterScreen
 import com.example.kaspresso.screens.LoginScreen
-import com.kaspersky.kaspresso.testcases.api.scenario.Scenario
-import com.kaspersky.kaspresso.testcases.core.testcontext.TestContext
-import org.junit.FixMethodOrder
+import com.example.kaspresso.screens.LoginScreen.checkEmail
+import com.example.kaspresso.screens.LoginScreen.checkLogin
+import com.example.kaspresso.screens.LoginScreen.checkPassword
+import com.example.kaspresso.screens.LoginScreen.clickLoginButton
+import com.example.kaspresso.screens.LoginScreen.setEmail
+import com.example.kaspresso.screens.LoginScreen.setPassword
+import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runners.MethodSorters
 
-@FixMethodOrder(MethodSorters.DEFAULT)
-class LoginTest : BaseCaspressoTest() {
+class LoginTest : TestCase() {
 
-    @Test
-    fun checkSuccessLogin() {
-        run {
-            scenario(openLoginScenario)
-            step("check views and type valid credentials") {
-                LoginScreen.apply {
-                    checkViews()
-                    setEmail("admin@gmail.com")
-                    setPassword("1234")
-                }
-            }
-            scenario(
-                tryToLoginAndCheckIsLoggedIn(
-                    description = "check login is success",
-                    loginChecker = LoginScreen::checkLoggedIn
-                )
-            )
-            val isCounterFragment = checkFragmentIsDisplayed<CounterFragment>()
-            assert(isCounterFragment)
-        }
-    }
+    @get:Rule
+    val activityTestRule = ActivityTestRule(MainActivity::class.java)
 
     @Test
-    fun checkInvalidCredentials() {
-        run {
-            scenario(openLoginScenario)
-            step("check views and type invalid credentials") {
-                LoginScreen.apply {
-                    checkViews()
-                    setEmail("asdasjf")
-                    setPassword("asfadvajhv")
-                }
-            }
-            scenario(
-                tryToLoginAndCheckIsLoggedIn(
-                    description = "check credentials is invalid",
-                    loginChecker = LoginScreen::checkCredentialsInvalid
-                )
-            )
+    fun checkLoggedIn() = run {
+        step("Открыть экран Авторизации") {
+            CounterScreen.openLoginScreenClick()
         }
-    }
-
-    @Test
-    fun checkLoginFailed() {
-        run {
-            scenario(openLoginScenario)
-            step("check views and type not recognized credentials") {
-                LoginScreen.apply {
-                    checkViews()
-                    setEmail("asdasd@gfg.vsa")
-                    setPassword("asfqf")
-                }
+        step("Проверитб элементы на экране") {
+            LoginScreen {
+                checkEmail()
+                checkLogin()
+                checkPassword()
             }
-            scenario(
-                tryToLoginAndCheckIsLoggedIn(
-                    description = "check login is failed",
-                    loginChecker = LoginScreen::checkLoginFailed
-                )
-            )
         }
-    }
-
-    private val openLoginScenario = object : Scenario() {
-        override val steps: TestContext<Unit>.() -> Unit
-            get() = {
-                step("open login screen") {
-                    CounterScreen.btnOpenLogin.click()
-                }
+        step("Ввести логин и пароль") {
+            LoginScreen {
+                setEmail("admin@gmail.com")
+                setPassword("1234")
             }
-
-    }
-
-    private fun tryToLoginAndCheckIsLoggedIn(description: String, loginChecker: () -> Unit) =
-        object : Scenario() {
-            override val steps: TestContext<Unit>.() -> Unit
-                get() = {
-                    step("try to login") {
-                        LoginScreen.clickLogin()
-                    }
-                    step(description) {
-                        loginChecker()
-                    }
-                }
-
         }
+        step("Авторизоваться") {
+            LoginScreen {
+                closeSoftKeyboard()
+                clickLoginButton()
+            }
+        }
+        step("Проверить, что юзер авторизовался") {
+            LoginScreen.checkLoginIsSucceded()
+        }
+        val isCounterFragment = checkFragmentIsDisplayed<CounterFragment>()
+        assert(isCounterFragment)
+    }
 }

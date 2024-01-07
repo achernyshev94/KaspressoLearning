@@ -10,8 +10,6 @@ import com.agoda.kakao.text.KTextView
 import com.example.kaspresso.R
 import com.example.kaspresso.TodoAdapter.TodoViewHolder
 import com.example.kaspresso.TodoFragment
-import com.example.kaspresso.base.BaseScreen
-import com.kaspersky.kaspresso.screens.KScreen
 import org.hamcrest.Matcher
 
 object TodoScreen : BaseScreen<TodoScreen>() {
@@ -43,7 +41,7 @@ object TodoScreen : BaseScreen<TodoScreen>() {
 
     fun checkViews() {
         etTodoTitle {
-            isVisible()
+            isDisplayed()
             hasText("")
         }
         btnSubmit.isVisible()

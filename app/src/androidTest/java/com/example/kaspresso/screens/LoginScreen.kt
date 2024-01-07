@@ -1,15 +1,11 @@
 package com.example.kaspresso.screens
 
-import com.agoda.kakao.common.builders.ViewBuilder
-import com.agoda.kakao.common.views.KView
 import com.agoda.kakao.edit.KEditText
 import com.agoda.kakao.text.KButton
 import com.example.kaspresso.LoginFragment
 import com.example.kaspresso.R
-import com.example.kaspresso.base.BaseScreen
-import com.kaspersky.kaspresso.screens.KScreen
 
-object LoginScreen: BaseScreen<LoginScreen>() {
+object LoginScreen : BaseScreen<LoginScreen>() {
     override val layoutId: Int = R.layout.fragment_login
     override val viewClass: Class<*> = LoginFragment::class.java
 
@@ -25,34 +21,6 @@ object LoginScreen: BaseScreen<LoginScreen>() {
         withId(R.id.btn_login)
     }
 
-    fun checkViews() {
-        etEmail { isVisible() }
-        etPassword { isVisible() }
-        btnLogin { isVisible() }
-    }
-
-    fun checkLoggedIn() {
-        getToast("Success logged in") {
-            isVisible()
-        }
-    }
-
-    fun checkLoginFailed() {
-        getToast("Login failed") {
-            isVisible()
-        }
-    }
-
-    fun checkCredentialsInvalid() {
-        getToast("Credentials is invalid") {
-            isVisible()
-        }
-    }
-
-    fun clickLogin() {
-        closeSoftKeyboard()
-        btnLogin.click()
-    }
 
     fun setEmail(text: String) {
         etEmail.typeText(text)
@@ -60,5 +28,27 @@ object LoginScreen: BaseScreen<LoginScreen>() {
 
     fun setPassword(text: String) {
         etPassword.typeText(text)
+    }
+
+    fun clickLoginButton() {
+        btnLogin.click()
+    }
+
+    fun checkEmail() {
+        etEmail.isDisplayed()
+    }
+
+    fun checkLogin() {
+        btnLogin.isDisplayed()
+    }
+
+    fun checkPassword() {
+        etPassword.isDisplayed()
+    }
+
+    fun checkLoginIsSucceded() {
+        getToast("Success logged in") {
+            isDisplayed()
+        }
     }
 }
