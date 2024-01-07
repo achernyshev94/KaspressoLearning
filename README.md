@@ -1,1 +1,3 @@
-# MyKaspressoLearn
+# KaspressoLearning
+
+В рамках учебного проекта простое приложение было покрыто UI тестами с использованием Kaspresso и с применением паттерна PageObject
